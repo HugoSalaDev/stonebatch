@@ -59,8 +59,7 @@ The deployable static output is written to `dist/`.
 ## First Cloudflare Pages preview deployment
 
 Authenticate Wrangler with the authorized Cloudflare account, then deploy the built output to the
-free Pages project. The project name must be `stonebatch`. This deployment has not been run yet:
-it requires access to the account to create or select the Pages project.
+free Pages project. The project name must be `stonebatch`.
 
 ```sh
 npx wrangler login
@@ -71,6 +70,19 @@ npx wrangler pages deploy dist --project-name stonebatch --branch preview
 Cloudflare returns the exact HTTPS `*.pages.dev` preview URL after deployment. Keep the `preview`
 branch deployment as a noindex environment; this T01 build includes both a robots meta tag and the
 Cloudflare Pages `_headers` `X-Robots-Tag` header.
+
+## T01 deployment record
+
+The initial free Pages project was created manually in the Cloudflare Pages dashboard by the
+account holder, rather than through the Wrangler direct-upload command above. The active URLs are:
+
+- `https://stonebatch.pages.dev`
+- `https://2f926fa8.stonebatch.pages.dev`
+
+Both URLs were verified on 28 September 2026 with HTTPS `200`, the HTML `noindex, nofollow` meta
+tag, the `X-Robots-Tag: noindex, nofollow` response header, and `/robots.txt` disallowing crawling.
+The Wrangler commands remain the documented direct-upload procedure for a future explicitly
+authorized deployment.
 
 ## Production deployment (not part of T01)
 
