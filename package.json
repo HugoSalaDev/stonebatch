@@ -10,6 +10,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "preview": "astro preview",
     "pages:dev": "wrangler pages dev --local-protocol=https",
     "pages:deploy:preview": "wrangler pages deploy --branch preview",
@@ -17,6 +19,8 @@
   },
   "devDependencies": {
     "astro": "7.3.5",
+    "typescript": "5.9.3",
+    "vitest": "5.0.2",
     "wrangler": "4.143.0"
   }
 }
