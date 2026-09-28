@@ -98,6 +98,23 @@ describe('validateInput', () => {
     expect(unsupported.every((error) => error.row === 1 && error.character && error.column)).toBe(true);
   });
 
+  it.each(['ı', 'ſ', 'ß'])('does not normalize Unicode %s into permitted ASCII', (input) => {
+    const result = validateInput(input);
+
+    expect(result.valid).toBe(false);
+    expect(result.rows[0].normalizedText).toBe(input);
+    expect(result.rows[0].errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'UNSUPPORTED_CHARACTER',
+          character: input,
+          row: 1,
+          column: 1,
+        }),
+      ]),
+    );
+  });
+
   it('does not drop valid rows when another row is invalid', () => {
     const result = validateInput('ANNA\nJosé\nMIA');
 

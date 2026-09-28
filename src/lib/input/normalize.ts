@@ -60,13 +60,21 @@ export interface InputValidationResult {
 }
 
 const ALLOWED_CHARACTER = /^[A-Z0-9 -]$/;
+const ASCII_LOWERCASE = /^[a-z]$/;
 
 function normalizeText(value: string): string {
   const uppercased = Array.from(value, (character) => {
+    if (ASCII_LOWERCASE.test(character)) {
+      return character.toUpperCase();
+    }
+
     const uppercaseCharacter = character.toUpperCase();
 
-    // Keep expansions such as ß -> SS intact: unsupported characters must not be changed silently.
-    return Array.from(uppercaseCharacter).length === 1 ? uppercaseCharacter : character;
+    // Preserve any Unicode character whose uppercase form contains permitted ASCII.
+    // It must remain identifiable so the validation error can point to the original character.
+    return Array.from(uppercaseCharacter).some((uppercasePart) => /^[A-Z]$/.test(uppercasePart))
+      ? character
+      : uppercaseCharacter;
   }).join('');
 
   return uppercased.replace(/^ +| +$/g, '').replace(/ {2,}/g, ' ');
