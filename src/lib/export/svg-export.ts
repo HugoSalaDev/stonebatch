@@ -46,15 +46,16 @@ export interface CalibrationInstructions {
 /** Reusable copy for a future calibration/download interface. */
 export const CALIBRATION_INSTRUCTIONS: CalibrationInstructions = Object.freeze({
   calibration: Object.freeze([
-    'Corta y prueba las cuatro muestras con tu propio material.',
-    'Comprueba qué diámetro encaja mejor con tus piedras antes de generar un diseño.',
-    'SS10 no significa que todas las piedras tengan exactamente el mismo diámetro.',
-    'No asumas una presión, cuchilla o material universal: ajústalos a tu máquina y material.',
+    'Test all four samples with your own material.',
+    'Determine which hole diameter fits your rhinestones best before creating a design.',
+    'SS10 does not mean every rhinestone has exactly the selected diameter.',
+    'Do not assume there is one universal pressure, blade, or material setting; adjust them to your machine and material.',
   ]),
   cricut: Object.freeze([
-    'Importa el SVG como corte y comprueba el ancho y alto frente a las medidas del diseño.',
-    'Selecciona todos los elementos y usa Attach para conservar sus posiciones en el tapete.',
-    'La agrupación SVG por sí sola no sustituye a Attach.',
+    'Import the SVG as a cut.',
+    'Verify the width and height against the design measurements.',
+    'Select all design elements and use Attach to preserve their placement on the mat.',
+    'SVG grouping alone does not replace Attach.',
   ]),
 });
 

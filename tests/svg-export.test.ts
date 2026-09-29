@@ -138,11 +138,14 @@ describe('5×5 calibration coupons', () => {
 
   it('returns reusable calibration and Cricut instructions without cut text in the SVGs', () => {
     expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('SS10');
-    expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('propio material');
-    expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('presión, cuchilla o material universal');
-    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('Importa el SVG como corte');
+    expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('your own material');
+    expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('which hole diameter fits your rhinestones best');
+    expect(CALIBRATION_INSTRUCTIONS.calibration.join(' ')).toContain('universal pressure, blade, or material setting');
+    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('Import the SVG as a cut');
+    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('Verify the width and height');
+    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('Select all design elements');
     expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('Attach');
-    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('no sustituye a Attach');
+    expect(CALIBRATION_INSTRUCTIONS.cricut.join(' ')).toContain('SVG grouping alone does not replace Attach');
   });
 
   it('is deterministic across repeated coupon generation', () => {
