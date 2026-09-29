@@ -29,6 +29,7 @@
     "wrangler": "4.143.0"
   },
   "dependencies": {
+    "fflate": "^0.8.2",
     "opentype.js": "2.0.0"
   }
 }
