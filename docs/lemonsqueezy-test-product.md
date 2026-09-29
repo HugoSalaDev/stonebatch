@@ -69,11 +69,10 @@ licence never expires and is inactive, consistent with the intended unlimited
 licence configuration. No full licence key, purchaser information, or payment
 details are stored in this repository.
 
-The configured receipt CTA was reviewed in the product editor. The Test Mode
-receipt is sent by Lemon Squeezy to the store owner/team; this environment has
-no connected mailbox from which to open that email, so the rendered email CTA
-and its licence display remain a manual Test Mode verification item. The
-configuration and the confirmation CTA fallback have been verified.
+The buyer receipt was manually verified: it includes the generated licence key,
+shows the `Activate StoneBatch` button, and that button opens the configured
+`/activate/` fallback without a licence query string. No key, buyer data, or
+order details are recorded in this repository.
 
 ## Terms and refunds
 
