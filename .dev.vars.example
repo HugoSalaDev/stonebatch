@@ -1,0 +1,7 @@
+# Cloudflare Pages Functions local/Test configuration.
+# Copy to .dev.vars only for local testing and never commit real values.
+LEMONSQUEEZY_API_KEY=
+LEMONSQUEEZY_STORE_ID=
+LEMONSQUEEZY_PRODUCT_ID=
+LEMONSQUEEZY_VARIANT_ID=
+LEMONSQUEEZY_ENV=
