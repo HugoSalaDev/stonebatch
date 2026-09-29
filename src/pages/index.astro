@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 
-const title = 'StoneBatch — SS10 rhinestone name templates';
-const description = 'Prepare batches of SS10 rhinestone name templates for Cricut.';
+const title = 'StoneBatch — SS10 rhinestone SVG templates';
+const description = 'Generate local SS10 rhinestone SVG previews for a list of names.';
 ---
 
 <!doctype html>
@@ -16,28 +16,69 @@ const description = 'Prepare batches of SS10 rhinestone name templates for Cricu
   </head>
   <body>
     <main class="page-shell">
-      <p class="eyebrow">StoneBatch preview</p>
-      <h1>SS10 rhinestone name templates, made for batches.</h1>
-      <p class="lead">
-        StoneBatch is a browser-based tool for preparing multiple names and numbers as Cricut-ready
-        rhinestone templates.
-      </p>
-      <section aria-labelledby="preview-status">
-        <h2 id="preview-status">Preview environment</h2>
-        <p>
-          The initial project and deployment are ready for validation. Template entry, generation and
-          downloads are not available yet.
-        </p>
+      <header class="hero">
+        <p class="eyebrow">StoneBatch</p>
+        <h1>Turn your name list into matching SS10 rhinestone SVG templates.</h1>
+        <p class="lead">Preview every name. Test one free. Export up to 30 together for €9.90 — 7-day access, no subscription.</p>
+      </header>
+
+      <section class="panel editor-panel" aria-labelledby="editor-heading">
+        <div>
+          <h2 id="editor-heading">Create a local preview</h2>
+          <p class="section-intro">One name, number, or permitted hyphenated text per line. Your names stay in this browser.</p>
+        </div>
+        <form id="stonebatch-editor" novalidate>
+          <div class="field">
+            <label for="name-list">Name list</label>
+            <textarea id="name-list" name="name-list" rows="8" maxlength="10240" aria-describedby="name-list-help input-feedback" placeholder="ANNA&#10;MIA&#10;JACK-2"></textarea>
+            <p id="name-list-help" class="field-help">1–30 non-empty lines, up to 20 characters each. Allowed: A–Z, 0–9, spaces, and hyphens.</p>
+          </div>
+          <div class="settings-grid">
+            <div class="field">
+              <label for="height-mm">Nominal letter height</label>
+              <select id="height-mm" name="height-mm"><option value="35">35 mm</option><option value="45" selected>45 mm</option><option value="55">55 mm</option></select>
+            </div>
+            <div class="field">
+              <label for="diameter-mm">Hole diameter</label>
+              <select id="diameter-mm" name="diameter-mm"><option value="3">3.0 mm</option><option value="3.2" selected>3.2 mm</option><option value="3.4">3.4 mm</option><option value="3.6">3.6 mm</option></select>
+            </div>
+          </div>
+          <div id="input-feedback" class="feedback" aria-live="polite"></div>
+          <div class="editor-actions">
+            <button id="generate-previews" class="button button-primary" type="submit">Generate previews</button>
+            <button id="retry-generation" class="button button-secondary" type="button" hidden>Try again</button>
+          </div>
+          <p id="generation-status" class="generation-status" role="status" aria-live="polite">Enter a list, then generate local previews.</p>
+        </form>
       </section>
-      <section aria-labelledby="planned-output">
-        <h2 id="planned-output">Planned output</h2>
-        <ul>
-          <li>Names and numbers prepared in a single batch.</li>
-          <li>SS10 rhinestone templates for Cricut workflows.</li>
-          <li>Files generated locally in the browser.</li>
-        </ul>
+
+      <section id="preview-section" class="preview-section" aria-labelledby="preview-heading">
+        <div class="section-heading">
+          <div><h2 id="preview-heading">Per-row preview</h2><p id="preview-freshness" class="field-help">Generated previews will appear here in the same order as your list.</p></div>
+          <p id="browser-measurement" class="measurement" role="status" hidden></p>
+        </div>
+        <div id="preview-results" class="preview-results" aria-live="polite"></div>
       </section>
-      <p class="notice">This preview is intentionally not indexed by search engines.</p>
+
+      <section class="panel calibration-panel" aria-labelledby="calibration-heading">
+        <h2 id="calibration-heading">Find the best fit before making a batch</h2>
+        <p class="section-intro">Download and cut the four 5 × 5 calibration samples before generating a finished design.</p>
+        <div id="calibration-downloads" class="calibration-downloads"></div>
+        <h3>Calibration notes</h3><ul id="calibration-instructions" class="instruction-list"></ul>
+        <h3>Using the SVG in Cricut Design Space</h3>
+        <p>These SVGs are intended to be imported in Cricut Design Space on desktop.</p>
+        <ul id="cricut-instructions" class="instruction-list"></ul>
+      </section>
+
+      <section class="panel commercial-panel" aria-labelledby="commercial-heading">
+        <div><p class="eyebrow">Batch export</p><h2 id="commercial-heading">Export all — €9.90</h2><p>Up to 30 valid designs, 7-day access, and no subscription.</p></div>
+        <div>
+          <ul class="offer-list"><li>No automatic renewal.</li><li>14-day self-service refund.</li></ul>
+          <button id="export-all" class="button button-primary" type="button" disabled aria-describedby="commercial-status">Export all — €9.90</button>
+          <p id="commercial-status" class="field-help">Generate at least two valid rows to make the future batch export available.</p>
+        </div>
+      </section>
     </main>
+    <script>import '../scripts/stonebatch-editor';</script>
   </body>
 </html>
