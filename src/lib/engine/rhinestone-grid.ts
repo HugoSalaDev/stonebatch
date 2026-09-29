@@ -162,6 +162,17 @@ export function generateRhinestoneBatch(
   diameterMm: DiameterMm,
 ): RhinestoneBatchResult {
   const rows = geometries.map((geometry, index) => generateRhinestoneRow(geometry, diameterMm, index + 1));
+  return createRhinestoneBatchResult(rows, diameterMm);
+}
+
+/**
+ * Builds the shared T04 batch preflight from already generated rows. This keeps
+ * the Worker able to report per-row progress without recalculating geometry.
+ */
+export function createRhinestoneBatchResult(
+  rows: readonly RhinestoneRowResult[],
+  diameterMm: DiameterMm,
+): RhinestoneBatchResult {
   const complexity = preflightComplexity(rows.map((row) => row.circleCount));
   const errors = complexity.batchErrors;
 
@@ -169,7 +180,7 @@ export function generateRhinestoneBatch(
     engineVersion: RHINESTONE_ENGINE_VERSION,
     diameterMm,
     totalCircleCount: complexity.totalCircleCount,
-    rows,
+    rows: [...rows],
     valid: errors.length === 0 && rows.every((row) => row.valid),
     errors,
   };

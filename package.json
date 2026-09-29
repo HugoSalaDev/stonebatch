@@ -11,6 +11,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "test": "vitest run",
+    "benchmark:worker": "vitest run tests/worker-benchmark.test.ts --reporter=verbose",
     "typecheck": "tsc --noEmit",
     "preview": "astro preview",
     "pages:dev": "wrangler pages dev --local-protocol=https",
