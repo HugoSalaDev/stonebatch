@@ -32,5 +32,7 @@ describe('T08 editor page contract', () => {
     expect(editor).toContain('createCirclePreview');
     expect(editor).toContain("createElementNS('http://www.w3.org/2000/svg', 'circle')");
     expect(editor).toContain('getFirstFreeSvg');
+    expect(editor).toContain('commercialButton.disabled = !isCommercialExportEnabled');
+    expect(editor).toContain("commercialButton.addEventListener('click'");
   });
 });

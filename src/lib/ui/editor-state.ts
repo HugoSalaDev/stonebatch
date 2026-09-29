@@ -92,10 +92,15 @@ export function getCommercialEligibility(result: StoneBatchWorkerResult): Commer
   return { eligible: true, reason: null };
 }
 
-export function getFirstFreeSvg(result: StoneBatchWorkerResult): SvgDesignExport | null {
-  if (!result.batch) return null;
-  const rowIndex = result.batch.rows.findIndex((row) => row.valid);
-  if (rowIndex < 0) return null;
+/** A commercial CTA is only interactive for a current, fully valid batch. */
+export function isCommercialExportEnabled(
+  result: StoneBatchWorkerResult | null,
+  previewIsCurrent: boolean,
+): boolean {
+  return previewIsCurrent && result !== null && getCommercialEligibility(result).eligible;
+}
 
-  return exportRowSvg(result.batch.rows[rowIndex], rowIndex + 1);
+export function getFirstFreeSvg(result: StoneBatchWorkerResult): SvgDesignExport | null {
+  const firstRow = result.batch?.rows[0];
+  return firstRow?.valid ? exportRowSvg(firstRow, 1) : null;
 }

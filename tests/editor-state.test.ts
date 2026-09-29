@@ -13,6 +13,7 @@ import {
   createPreviewRows,
   getCommercialEligibility,
   getFirstFreeSvg,
+  isCommercialExportEnabled,
   isGeneratedPreviewCurrent,
 } from '../src/lib/ui/editor-state';
 
@@ -71,10 +72,27 @@ describe('T08 editor state', () => {
     expect(getFirstFreeSvg(result)?.filename).toBe('01-ANNA-h45-d3p2.svg');
   });
 
-  it('allows one free row but requires two valid rows for the commercial offer', async () => {
-    expect(getCommercialEligibility(await calculate('ANNA')).eligible).toBe(false);
-    expect(getCommercialEligibility(await calculate('ANNA\nMIA')).eligible).toBe(true);
-    expect(getCommercialEligibility(await calculate('ANNA\nJosé')).eligible).toBe(false);
+  it('enables commercial export only for a current, fully valid batch of two or more rows', async () => {
+    const oneRow = await calculate('ANNA');
+    const eligibleBatch = await calculate('ANNA\nMIA');
+    const inputError = await calculate('ANNA\nJosé');
+
+    expect(getCommercialEligibility(oneRow).eligible).toBe(false);
+    expect(getCommercialEligibility(eligibleBatch).eligible).toBe(true);
+    expect(getCommercialEligibility(inputError).eligible).toBe(false);
+    expect(isCommercialExportEnabled(null, true)).toBe(false);
+    expect(isCommercialExportEnabled(eligibleBatch, false)).toBe(false);
+    expect(isCommercialExportEnabled(oneRow, true)).toBe(false);
+    expect(isCommercialExportEnabled(inputError, true)).toBe(false);
+    expect(isCommercialExportEnabled(eligibleBatch, true)).toBe(true);
+  });
+
+  it('does not skip an invalid first row to offer a later SVG for free', async () => {
+    const result = await calculate('WWWW\nANNA', 55);
+
+    expect(result.batch?.rows[0].valid).toBe(false);
+    expect(result.batch?.rows[1].valid).toBe(true);
+    expect(getFirstFreeSvg(result)).toBeNull();
   });
 
   it('exposes all four reusable calibration coupons and instructions', () => {
