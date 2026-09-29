@@ -77,6 +77,21 @@ describe('StoneBatch Worker client', () => {
     expect(client.getState().progress).toEqual({ completedRows: 1, totalRows: 2, fraction: 0.5 });
   });
 
+  it('ignores a late error from the replaced Worker and completes the current job', () => {
+    const workers: FakeWorker[] = [];
+    const client = new StoneBatchWorkerClient(() => createFakeWorker(workers));
+    const firstId = client.run(project('ANNA'));
+    const secondId = client.run(project('MIA'));
+
+    workers[0].emitError('late failure from the replaced Worker');
+    expect(client.getState()).toMatchObject({ status: 'running', jobId: secondId, error: null });
+
+    workers[1].emit(success(secondId, 'MIA'));
+    expect(firstId).toBeLessThan(secondId);
+    expect(client.getState()).toMatchObject({ status: 'success', jobId: secondId, error: null });
+    expect(client.getState().result?.validation.rows[0].normalizedText).toBe('MIA');
+  });
+
   it('recovers from a Worker failure and retries the same project on a recreated Worker', () => {
     const workers: FakeWorker[] = [];
     const client = new StoneBatchWorkerClient(() => createFakeWorker(workers));
@@ -130,6 +145,10 @@ class FakeWorker implements WorkerTransport {
 
   public emit(message: StoneBatchWorkerResponse): void {
     this.onmessage?.({ data: message });
+  }
+
+  public emitError(message: string): void {
+    this.onerror?.({ message, error: new Error(message) });
   }
 }
 

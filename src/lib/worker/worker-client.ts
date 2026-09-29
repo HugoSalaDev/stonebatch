@@ -70,6 +70,7 @@ export class StoneBatchWorkerClient {
     try {
       const worker = this.worker ?? this.createWorker();
       this.worker = worker;
+      this.bindWorkerToJob(worker, jobId);
       worker.postMessage({ type: 'run', id: jobId, project: stableProject });
     } catch (error) {
       this.failCurrentJob(jobId, error);
@@ -109,12 +110,14 @@ export class StoneBatchWorkerClient {
   private createWorker(): WorkerTransport {
     const worker = this.workerFactory();
     worker.onmessage = (event) => this.handleMessage(event.data);
-    worker.onerror = (event) => {
-      if (this.currentJobId !== null) {
-        this.failCurrentJob(this.currentJobId, event.error ?? new Error(event.message ?? 'Worker failure.'));
-      }
-    };
     return worker;
+  }
+
+  private bindWorkerToJob(worker: WorkerTransport, jobId: number): void {
+    worker.onerror = (event) => {
+      if (this.worker !== worker || this.currentJobId !== jobId) return;
+      this.failCurrentJob(jobId, event.error ?? new Error(event.message ?? 'Worker failure.'));
+    };
   }
 
   private handleMessage(message: StoneBatchWorkerResponse): void {
